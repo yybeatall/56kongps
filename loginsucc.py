@@ -22,36 +22,19 @@ class MyTestCase(unittest.TestCase):
         #desired_caps["automationName"] = "Selendroid"
         self.driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
 
-    @data(("13900000217","123456",False),#用户不存在
-          ("13900001127","12345",False),#密码错误
-          ("1390000112","123456",False),#手机位数不对
-          ("13900001127","123456",True)#正常输入
-          )
+    @data("13900001127","123456")
 
-    @unpack
-    def testLogIn(self, username, password, expectedresult):
+    def testLogIn(self, username, password):
         global exist
         self.driver.find_element_by_id("com.yihu001.kon.driver:id/et_user_name").send_keys(username)
         self.driver.find_element_by_id("com.yihu001.kon.driver:id/et_pwd").send_keys(password)
         self.driver.find_element_by_id("com.yihu001.kon.driver:id/btn_sign").click()
 
         sleep(3)
-        # try:
-        #     if self.driver.find_element_by_link_text(toastmessage).is_displayed():
-        #         toastexist = True
-        # except Exception as e:
-        #     toastexist = False
-        try:
-            if self.driver.find_element_by_id("com.yihu001.kon.driver:id/btn_sign").is_displayed():
-                exist = False
-        except Exception as e:
-            exist = True
-
-        self.assertEqual(exist,expectedresult)
 
 
-    def tearDown(self):
-        self.driver.quit()
+    # def tearDown(self):
+    #     self.driver.quit()
 
 
 if __name__ == '__main__':
