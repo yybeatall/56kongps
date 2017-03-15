@@ -1,15 +1,15 @@
 # usr/bin/python
 # encoding:utf-8
-# 足迹版测试--登录
+# 足迹版测试--注销
 import unittest
 from time import sleep
 
 from appium import webdriver
-from ddt import ddt, data, unpack
 
-@ddt
+
 class MyTestCase(unittest.TestCase):
     def setUp(self):
+
         desired_caps = {}
         desired_caps['platformName'] = 'Android'
         # 天天模拟器
@@ -25,16 +25,25 @@ class MyTestCase(unittest.TestCase):
         # desired_caps["automationName"] = "Selendroid"
         self.driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
 
-    @data(("13900001127", "123456"))
-    @unpack
-    def testLoginsucc(self, username, password):
-        global exist
+    def testLogout(self):
+        sleep(5)
         #小米7提示
         self.driver.find_element_by_id("com.yihu001.kon.driver:id/close").click()
-        self.driver.find_element_by_id("com.yihu001.kon.driver:id/et_user_name").send_keys(username)
-        self.driver.find_element_by_id("com.yihu001.kon.driver:id/et_pwd").send_keys(password)
-        self.driver.find_element_by_id("com.yihu001.kon.driver:id/btn_sign").click()
-
+        #点击我的
+        self.driver.find_elements_by_id("com.yihu001.kon.driver:id/bottom_navigation_container")[3].click()
+        #self.driver.find_element_by_xpath('//com.yihu001.kon.driver:id/bottom_navigation_item_title[contains(@text, "我的")]').click()
+        #self.driver.find_elements_by_class_name("android.widget.FrameLayout")[4].click()
+        #点击设置按钮
+        self.driver.find_element_by_id("com.yihu001.kon.driver:id/profile_set").click()
+        #滑动
+        e1=self.driver.find_element_by_id("com.yihu001.kon.driver:id/update_password_layout")
+        e2=self.driver.find_element_by_id("com.yihu001.kon.driver:id/image_cache_layout")
+        self.driver.scroll(e1,e2)
+        sleep(2)
+        #点击退出
+        self.driver.find_element_by_id("com.yihu001.kon.driver:id/exit").click()
+        #确定
+        self.driver.find_element_by_id("com.yihu001.kon.driver:id/ok").click()
         sleep(3)
 
     def tearDown(self):
